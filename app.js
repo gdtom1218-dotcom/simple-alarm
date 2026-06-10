@@ -108,6 +108,8 @@ function ring() {
   overlayEl.classList.remove("hidden");
   beep();
   ringTimer = setInterval(beep, 800);
+  // 「止める」へフォーカスを当ててEnterだけで止められるように
+  stopBtn.focus();
 }
 
 function stopRing() {
@@ -132,6 +134,15 @@ formEl.addEventListener("submit", (e) => {
 });
 
 stopBtn.addEventListener("click", stopRing);
+
+// 鳴動中はどこにフォーカスがあっても Enter（または Esc）で止める
+document.addEventListener("keydown", (e) => {
+  if (overlayEl.classList.contains("hidden")) return;
+  if (e.key === "Enter" || e.key === "Escape") {
+    e.preventDefault();
+    stopRing();
+  }
+});
 
 // ---- 起動 ----
 renderList();
